@@ -234,11 +234,21 @@ function MandalaRings({ mode }: { mode: Mode }) {
 }
 
 function CameraController({ mode }: { mode: Mode }) {
-  const { camera, gl } = useThree();
+  const { camera, gl, size } = useThree();
   const controlsRef = useRef<any>(null);
 
-  // Target camera positions
-  const mandalaPos = new THREE.Vector3(0, 0, 250);
+  // Dynamic camera position calculation
+  const aspect = size.width / size.height;
+  // Mandala radius ~65 units (1.8 * 35). We need to fit diameter ~130.
+  // Add some padding (e.g. 150 total width needed).
+  // FOV is 45 degrees.
+  // tan(22.5) = (visible_width / 2) / dist
+  // dist = (visible_width / 2) / (aspect * tan(22.5))
+  // dist = 75 / (aspect * 0.4142) ≈ 181 / aspect
+  const baseDist = 200;
+  const mandalaDist = aspect < 1 ? baseDist / aspect : baseDist; // Adjust for portrait
+  
+  const mandalaPos = new THREE.Vector3(0, 0, mandalaDist);
 
   useEffect(() => {
     if (controlsRef.current) {
@@ -396,7 +406,7 @@ export const UnifiedView = () => {
 
       {/* UI Overlay: Timeline Controls (Only visible/active in Cosmos mostly, but useful for both) */}
       <div className={clsx(
-         "absolute bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-2xl bg-black/60 backdrop-blur border border-white/10 rounded-xl p-4 flex items-center gap-4 z-40 text-white transition-opacity duration-500",
+         "absolute bottom-12 md:bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-2xl bg-black/60 backdrop-blur border border-white/10 rounded-xl p-4 flex items-center gap-4 z-[60] text-white transition-opacity duration-500",
          mode === 'mandala' ? "opacity-30 hover:opacity-100" : "opacity-100"
       )}>
         <button 
