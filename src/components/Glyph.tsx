@@ -109,7 +109,7 @@ export const Glyph = ({ body, size = 60, showLabel = true, onClick, className, v
             className="font-bold tracking-widest text-white drop-shadow-md"
             style={{ 
               // Base font size 13px (increased from 10px), scaled by resScale. 
-              fontSize: `${13 * resScale}px` 
+              fontSize: `${15 * resScale}px` 
             }}
           >
             {labelZh}
