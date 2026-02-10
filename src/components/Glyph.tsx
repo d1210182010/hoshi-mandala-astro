@@ -16,7 +16,7 @@ export const Glyph = ({ body, size = 60, showLabel = true, onClick, className, v
   const [imgError, setImgError] = useState(false);
   const { sanskritKey, fallbackChar, labelZh, color } = body;
 
-  const glyphPath = `/glyphs/${sanskritKey}.svg`;
+  const glyphPath = `${import.meta.env.BASE_URL}glyphs/${sanskritKey}.svg`;
 
   // Reset error state if body changes
   useEffect(() => {
